@@ -48,7 +48,7 @@ namespace Bridge.Razor
         /// Write the given value directly to the output
         /// </summary>
         /// <param name="value"></param>
-        protected void WriteLiteral(string value)
+        protected virtual void WriteLiteral(string value)
         {
             WriteLiteralTo(Output, value);
         }
@@ -57,14 +57,14 @@ namespace Bridge.Razor
         /// Write the given value directly to the output
         /// </summary>
         /// <param name="value"></param>
-        protected void WriteLiteral(object value)
+        protected virtual void WriteLiteral(object value)
         {
             WriteLiteralTo(Output, value);
         }
 
         private List<string> AttributeValues { get; set; }
 
-        protected void WriteAttributeValue(string thingy, int startPostion, object value, int endValue, int dealyo, bool yesno)
+        protected virtual void WriteAttributeValue(string thingy, int startPostion, object value, int endValue, int dealyo, bool yesno)
         {
             if (AttributeValues == null)
             {
@@ -76,7 +76,7 @@ namespace Bridge.Razor
 
         private string AttributeEnding { get; set; }
 
-        protected void BeginWriteAttribute(string name, string begining, int startPosition, string ending, int endPosition, int thingy)
+        protected virtual void BeginWriteAttribute(string name, string begining, int startPosition, string ending, int endPosition, int thingy)
         {
             Debug.Assert(string.IsNullOrEmpty(AttributeEnding));
 
@@ -84,7 +84,7 @@ namespace Bridge.Razor
             AttributeEnding = ending;
         }
 
-        protected void EndWriteAttribute()
+        protected virtual void EndWriteAttribute()
         {
             Debug.Assert(!string.IsNullOrEmpty(AttributeEnding));
 
@@ -104,7 +104,7 @@ namespace Bridge.Razor
         /// <param name="leader">The value of the prefix</param>
         /// <param name="trailer">The value of the suffix</param>
         /// <param name="values">The <see cref="AttributeValue"/>s to write.</param>
-        protected void WriteAttributeTo(
+        protected virtual void WriteAttributeTo(
             TextWriter writer,
             string name,
             string leader,
@@ -183,7 +183,7 @@ namespace Bridge.Razor
         /// Convert to string and html encode
         /// </summary>
         /// <param name="value"></param>
-        protected void Write(object value)
+        protected virtual void Write(object value)
         {
             WriteTo(Output, value);
         }
@@ -192,7 +192,7 @@ namespace Bridge.Razor
         /// Html encode and write
         /// </summary>
         /// <param name="value"></param>
-        protected void Write(string value)
+        protected virtual void Write(string value)
         {
             WriteTo(Output, value);
         }
@@ -201,7 +201,7 @@ namespace Bridge.Razor
         /// <see cref="HelperResult.WriteTo(TextWriter)"/> is invoked
         /// </summary>
         /// <param name="result">The <see cref="HelperResult"/> to invoke</param>
-        protected void Write(HelperResult result)
+        protected virtual void Write(HelperResult result)
         {
             WriteTo(Output, result);
         }
@@ -216,7 +216,7 @@ namespace Bridge.Razor
         /// For all other types, the encoded result of <see cref="object.ToString"/> is written to the
         /// <paramref name="writer"/>.
         /// </remarks>
-        protected void WriteTo(TextWriter writer, object value)
+        protected virtual void WriteTo(TextWriter writer, object value)
         {
             if (value != null)
             {
@@ -237,7 +237,7 @@ namespace Bridge.Razor
         /// </summary>
         /// <param name="writer">The <see cref="TextWriter"/> instance to write to.</param>
         /// <param name="value">The <see cref="string"/> to write.</param>
-        protected void WriteTo(TextWriter writer, string value)
+        protected virtual void WriteTo(TextWriter writer, string value)
         {
             WriteLiteralTo(writer, HtmlEscape(value));
         }
@@ -247,7 +247,7 @@ namespace Bridge.Razor
         /// </summary>
         /// <param name="writer">The <see cref="TextWriter"/> instance to write to.</param>
         /// <param name="value">The <see cref="object"/> to write.</param>
-        protected void WriteLiteralTo(TextWriter writer, object value)
+        protected virtual void WriteLiteralTo(TextWriter writer, object value)
         {
             WriteLiteralTo(writer, Convert.ToString(value, CultureInfo.InvariantCulture));
         }
@@ -257,7 +257,7 @@ namespace Bridge.Razor
         /// </summary>
         /// <param name="writer">The <see cref="TextWriter"/> instance to write to.</param>
         /// <param name="value">The <see cref="string"/> to write.</param>
-        protected void WriteLiteralTo(TextWriter writer, string value)
+        protected virtual void WriteLiteralTo(TextWriter writer, string value)
         {
             if (!string.IsNullOrEmpty(value))
             {

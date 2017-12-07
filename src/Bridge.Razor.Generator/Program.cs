@@ -22,8 +22,30 @@ namespace Bridge.Razor.Generator
             if(Directory.Exists(outputDirectory))
                 Directory.Delete(outputDirectory, true);
             Directory.CreateDirectory(outputDirectory);
+
+
+
+            CustomWriterPhase customWriter = null;
+            var engine = RazorEngine.Create(builder =>
+            {
+                builder
+                    .SetNamespace("Bridge.Razor.Generated")
+                    .SetBaseType("Bridge.Razor.BaseView")
+                    .ConfigureClass((document, @class) =>
+                    {
+                        @class.ClassName = ClassName;
+                        @class.Modifiers.Clear();
+                        @class.Modifiers.Add("public");
+                    });
+                var defaultCSharpLoweringPhase = builder.Phases.OfType<IRazorCSharpLoweringPhase>().Single();
+                builder.Phases.Remove(defaultCSharpLoweringPhase);
+                builder.Phases.Add(customWriter = new CustomWriterPhase(defaultCSharpLoweringPhase));
+                
+                Microsoft.AspNetCore.Razor.Language.Extensions.InheritsDirective.Register(builder);
+                Microsoft.AspNetCore.Razor.Language.Extensions.FunctionsDirective.Register(builder);
+                
+            });
             
-            var engine = CreateRazorEngine("Bridge.Razor.Generated");
             var prj = RazorProject.Create(baseDirectory);
             var tengine = new RazorTemplateEngine(engine, prj);
 
@@ -37,6 +59,26 @@ namespace Bridge.Razor.Generator
             {
                 Console.WriteLine($"Generating code file for view {item.CombinedPath}");
 
+                Func<string, string> postProcess = _ => _;
+                customWriter.Writer = null;
+                var lines = File.ReadAllLines(item.PhysicalPath);
+                foreach (var l in lines)
+                {
+                    var m = Regex.Match(l, @"^\s*@\*(.*)\*@\s*$");
+                    if(!m.Success && !string.IsNullOrWhiteSpace(l))
+                        break;
+                    var directive = m.Groups[1].Value.Trim().Split(new[] {'='}, 2).Select(x => x.Trim()).ToArray();
+                    var key = directive[0];
+                    var value = directive.Length > 1 ? directive[1] : null;
+                    if (key == "type" && value == "react")
+                    {
+                        customWriter.Writer = new VirtualDomDocumentWriter();
+                        postProcess = s =>
+                            s.Replace("public async override global::System.Threading.Tasks.Task ExecuteAsync",
+                                "protected override void RenderCore");
+                    }
+                }
+                
                 var cSharpDocument = tengine.GenerateCode(item);
                 if (cSharpDocument.Diagnostics.Any())
                 {
@@ -52,6 +94,7 @@ namespace Bridge.Razor.Generator
                                         "[^A-Za-z-0-9]+", "") + "_" +
                                     Guid.NewGuid().ToString().Replace("-", "");
                     var code = cSharpDocument.GeneratedCode.Replace(ClassName, className);
+                    code = postProcess(code);
                     File.WriteAllText(Path.Combine(outputDirectory, className + ".generated.cs"), code);
                     initCode += "\nBridge.Razor.RuntimeSupport.ViewRegistry.Register(\""
                                 + path.Replace("\\", "/")
@@ -73,26 +116,8 @@ namespace Bridge.Razor.Generator
             return 0;
         }
         
-        public static RazorEngine CreateRazorEngine(string ns, Action<IRazorEngineBuilder> configure = null)
-        {
-            var razorEngine = RazorEngine.Create(builder =>
-            {
-                builder
-                    .SetNamespace(ns)
-                    .SetBaseType("Bridge.Razor.BaseView")
-                    .ConfigureClass((document, @class) =>
-                    {
-                        @class.ClassName = ClassName;
-                        @class.Modifiers.Clear();
-                        @class.Modifiers.Add("public");
-                    });
-                
-                Microsoft.AspNetCore.Razor.Language.Extensions.InheritsDirective.Register(builder);
-                Microsoft.AspNetCore.Razor.Language.Extensions.FunctionsDirective.Register(builder);
-                configure?.Invoke(builder);
-            });
-            return razorEngine;
-        }
+        
+        
 
     }
 }

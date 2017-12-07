@@ -5,12 +5,12 @@ namespace Bridge.Razor.RuntimeSupport
 {
     public static class ViewRegistry
     {
-        static readonly Dictionary<string, Func<IRazorView>> Registered = new Dictionary<string, Func<IRazorView>>();
-        public static void Register(string path, Func<IRazorView> factory)
+        static readonly Dictionary<string, Func<object>> Registered = new Dictionary<string, Func<object>>();
+        public static void Register(string path, Func<object> factory)
         {
             Registered[path] = factory;
         }
 
-        public static IRazorView CreateInstance(string path) => Registered[path]();
+        public static object CreateInstance(string path) => Registered[path]();
     }
 }
