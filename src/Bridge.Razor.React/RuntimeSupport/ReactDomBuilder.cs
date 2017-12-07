@@ -5,7 +5,7 @@ using Bridge.React;
 
 namespace Bridge.Razor.React.RuntimeSupport
 {
-    public class ReactDomBuilder
+    public class ReactDomBuilder : IDomBuilder
     {
         [Template("React.createElement({name}, Bridge.React.fixAttr({properties}), {*children})")]
         public static extern ReactElement CreateElement(string name, object properties, object[] children);
@@ -51,7 +51,7 @@ namespace Bridge.Razor.React.RuntimeSupport
         private DomElement _currentElement;
         private Stack<DomElement> _stack = new Stack<DomElement>();
         
-        public void BeginElement(string name)
+        public void StartElement(string name)
         {
             var el = new DomElement() {Name = name};
             _currentElement.Children.Add(el);
@@ -69,7 +69,7 @@ namespace Bridge.Razor.React.RuntimeSupport
             _currentElement = _stack.Pop();
         }
 
-        public void AddAttribute(string name, object value)
+        public void SetAttributeValue(string name, object value)
         {
             Script.Set(_currentElement.Attributes, name, value);
         }

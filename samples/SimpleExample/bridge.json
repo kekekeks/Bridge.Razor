@@ -1,6 +1,6 @@
 {
   // The folder to output JavaScript (.js) files.
-  "output": "$(OutDir)/bridge/",
+  "output": "$(OutDir)/wwwroot/",
 
   // Enable the Bridge Console.
   // Default is false.
@@ -11,13 +11,13 @@
   // Enable browser debugging of C# files.
   // Default is false.
   "sourceMap": {
-    "enabled": true
+    "enabled": false
   },
 
   // Set to true to disable Reflection metadata generation.
   // Default is false.
   "reflection": {
-    "disabled": false
+    "disabled": true
   },
 
   // Generate TypeScript Definition (.d.ts) files.

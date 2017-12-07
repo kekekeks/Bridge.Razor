@@ -1,0 +1,13 @@
+@* type=partial *@
+@using System
+@using Bridge.Html5
+@inherits SimpleExample.Views.SimpleReactComponent
+
+<label>@props.Label</label>
+<input onChange="@(
+    Event(x =>
+    {
+        SetState(new State {Value = x.CurrentTarget.As<HTMLInputElement>().Value});
+    }))" type="text" />
+<button disabled="@(state == null || string.IsNullOrWhiteSpace(state.Value))" onClick="@(
+    Event(_=>props.OnSave(state.Value)))">Save</button>
