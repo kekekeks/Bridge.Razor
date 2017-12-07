@@ -4,9 +4,14 @@ using Bridge.Html5;
 namespace Bridge.Razor
 {
     public class DefaultDomBuilder : IDomBuilder
-    {
+    {       
         private HTMLElement _currentElement = Document.CreateElement("div");
         private Stack<HTMLElement> _stack = new Stack<HTMLElement>();
+        
+        public DefaultDomBuilder(HTMLElement root)
+        {
+            _currentElement = root;
+        }
         
         public void StartElement(string name)
         {

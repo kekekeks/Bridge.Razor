@@ -3,7 +3,7 @@ using Bridge;
 using Bridge.Razor.React;
 using Bridge.React;
 
-namespace SimpleExample.Views
+namespace SimpleExample.Components
 {
     public partial class SimpleReactComponent 
         : RazorComponent<SimpleReactComponent.Props, SimpleReactComponent.State>
