@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="GenerateBridgeRazorFiles" BeforeTargets="BridgeNetCompilerTask;CoreCompile">
+        <Exec Command="$(MSBuildThisFileDirectory)\..\tools\gen\Bridge.Razor.Generator.exe &quot;$(ProjectDir)&quot; &quot;$(IntermediateOutputPath)\Bridge.Razor\&quot;"/>
+        <ItemGroup>
+            <Compile Include="$(IntermediateOutputPath)\Bridge.Razor\**\*.cs">
+                <InProject>false</InProject>
+            </Compile>
+        </ItemGroup>
+    </Target>
+</Project>

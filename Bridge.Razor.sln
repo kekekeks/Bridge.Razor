@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{09A3D551-0C74-49F4-9628-0A7D90EAC579}"
+ProjectSection(SolutionItems) = preProject
+	build.cake = build.cake
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{DF6EEC65-9F7D-44A8-8634-CE36D610F550}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleExample", "samples\SimpleExample\SimpleExample.csproj", "{93F278C3-E329-4BDB-8A3F-20FFFF679B27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge.Razor", "src\Bridge.Razor\Bridge.Razor.csproj", "{B6C99C82-7A4A-4B8C-8E58-633E4F20914E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge.Razor.Generator", "src\Bridge.Razor.Generator\Bridge.Razor.Generator.csproj", "{2B93AFAE-DE94-470C-92E4-A08C299BDDB7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{93F278C3-E329-4BDB-8A3F-20FFFF679B27} = {DF6EEC65-9F7D-44A8-8634-CE36D610F550}
+		{B6C99C82-7A4A-4B8C-8E58-633E4F20914E} = {09A3D551-0C74-49F4-9628-0A7D90EAC579}
+		{2B93AFAE-DE94-470C-92E4-A08C299BDDB7} = {09A3D551-0C74-49F4-9628-0A7D90EAC579}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93F278C3-E329-4BDB-8A3F-20FFFF679B27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93F278C3-E329-4BDB-8A3F-20FFFF679B27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93F278C3-E329-4BDB-8A3F-20FFFF679B27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93F278C3-E329-4BDB-8A3F-20FFFF679B27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6C99C82-7A4A-4B8C-8E58-633E4F20914E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6C99C82-7A4A-4B8C-8E58-633E4F20914E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6C99C82-7A4A-4B8C-8E58-633E4F20914E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6C99C82-7A4A-4B8C-8E58-633E4F20914E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B93AFAE-DE94-470C-92E4-A08C299BDDB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B93AFAE-DE94-470C-92E4-A08C299BDDB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B93AFAE-DE94-470C-92E4-A08C299BDDB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B93AFAE-DE94-470C-92E4-A08C299BDDB7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
