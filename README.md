@@ -3,11 +3,14 @@
 ## Usage
 
 1) Add nuget package (currently on myget https://www.myget.org/F/bridge-razor/api/v2 )
-2) Create .cshtml files
-3) use `RazorEngine.ExecuteViewToStringAsync("/Views/YourView.cshtml", model)`
-
-
-See simple example [here](https://github.com/kekekeks/Bridge.Razor.Example).
+2) Create .cshtml file
+3) 
+```csharp
+ Document.Body.AppendChild(RazorEngine.RenderDefaultView("/Views/SimpleView.cshtml", new SimpleViewModel()
+{
+  Foo = "bar"
+}));
+```
 
 
 ## How it works
