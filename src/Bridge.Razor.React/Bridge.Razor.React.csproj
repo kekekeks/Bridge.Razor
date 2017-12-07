@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{93F278C3-E329-4BDB-8A3F-20FFFF679B27}</ProjectGuid>
+    <ProjectGuid>{401313C9-3E26-4553-BB88-2413B8CE0616}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimpleExample</RootNamespace>
-    <AssemblyName>SimpleExample</AssemblyName>
+    <RootNamespace>Bridge.Razor.React</RootNamespace>
+    <AssemblyName>Bridge.Razor.React</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,28 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Compile Include="obj\Bridge.Razor\**\*.cs">
-      <InProject>false</InProject>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bridge.json" />
-    <Content Include="Views\ReactComponent.cshtml" />
-    <Content Include="Views\SimpleView.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="ViewModels\SimpleViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Bridge.Razor.React\Bridge.Razor.React.csproj">
-      <Project>{401313c9-3e26-4553-bb88-2413b8ce0616}</Project>
-      <Name>Bridge.Razor.React</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Bridge.Razor\Bridge.Razor.csproj">
-      <Project>{b6c99c82-7a4a-4b8c-8e58-633e4f20914e}</Project>
-      <Name>Bridge.Razor</Name>
-    </ProjectReference>
+    <Compile Include="RazorReactComponent.cs" />
+    <Compile Include="RuntimeSupport\ReactDomBuilder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\Bridge.Min.16.5.0\build\Bridge.Min.targets" Condition="Exists('..\..\packages\Bridge.Min.16.5.0\build\Bridge.Min.targets')" />

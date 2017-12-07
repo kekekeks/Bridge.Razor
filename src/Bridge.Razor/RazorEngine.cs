@@ -7,7 +7,7 @@ namespace Bridge.Razor
     public static class RazorEngine
     {
         public static Task ExecuteViewAsync(string path, TextWriter output, object model) 
-            => ViewRegistry.CreateInstance(path).ExecuteAsync(output, model);
+            => ((IRazorView)ViewRegistry.CreateInstance(path)).ExecuteAsync(output, model);
 
         public static async Task<string> ExecuteViewToStringAsync(string path, object model)
         {
