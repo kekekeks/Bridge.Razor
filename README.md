@@ -12,7 +12,7 @@
 }));
 ```
 
-or use partial view like here:
+or use partial view like [here](https://github.com/kekekeks/Bridge.Razor/tree/master/samples/SimpleExample/Components):
 
 ![component](https://user-images.githubusercontent.com/1067584/33739761-5c3ad9f2-dbaf-11e7-8f45-29f58e704748.png)
 
