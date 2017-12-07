@@ -5,6 +5,7 @@ using Bridge.Razor;
 using Bridge.Razor.React;
 using Bridge.React;
 using SimpleExample.ViewModels;
+using SimpleExample.Views;
 
 namespace SimpleExample
 {
@@ -23,8 +24,14 @@ namespace SimpleExample
         }
         public static async void Main()
         {
-            await LoadScript("https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react.js");
-            await LoadScript("https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react-dom.js");
+            await LoadScript("react.js");
+            await LoadScript("react-dom.js");
+            React.Render(new SimpleReactComponent(new SimpleReactComponent.Props()
+            {
+                Label = "Input text",
+                OnSave = t => Window.Alert(t)
+            }), Document.Body);
+            /*
             var content = await RazorEngine.ExecuteViewToStringAsync(
                 "/Views/SimpleView.cshtml", new SimpleViewModel
             {
@@ -32,7 +39,7 @@ namespace SimpleExample
             });
             Document.Body.InnerHTML = content;
             var c = (RazorComponent) RazorEngine.CreateView("/Views/ReactComponent.cshtml");
-            React.Render(c.Render(), Document.Body);
+            React.Render(c.Render(), Document.Body);*/
         }
     }
 }

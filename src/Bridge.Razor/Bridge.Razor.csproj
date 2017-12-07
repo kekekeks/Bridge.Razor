@@ -35,6 +35,9 @@
     <Reference Include="Bridge, Version=16.5.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\packages\Bridge.Core.16.5.0\lib\net40\Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="Bridge.Html5, Version=16.5.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\Bridge.Html5.16.5.0\lib\net40\Bridge.Html5.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -48,8 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseView.cs" />
+    <Compile Include="DefaultDomBuilder.cs" />
+    <Compile Include="IDomBuilder.cs" />
     <Compile Include="IHtmlContent.cs" />
-    <Compile Include="IRazorView.cs" />
     <Compile Include="RazorEngine.cs" />
     <Compile Include="RuntimeSupport\AttributeValue.cs" />
     <Compile Include="RuntimeSupport\HelperResult.cs" />

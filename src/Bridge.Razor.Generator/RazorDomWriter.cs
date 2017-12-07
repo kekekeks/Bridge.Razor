@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
 namespace Bridge.Razor.Generator
 {
-    class VirtualDomDocumentWriter : DocumentWriter
+    class RazorDomWriter : DocumentWriter
     {
         private readonly static Regex _incompleteAttributeRegex = new Regex(@"\s(?<name>[a-z0-9\.\-:_]+)\s*\=\s*$");
 
@@ -126,7 +126,7 @@ namespace Bridge.Razor.Generator
             private void OpenElement(string tagName)
             {
                 Context.CodeWriter
-                    .WriteStartMethodInvocation("Builder.BeginElement")
+                    .WriteStartMethodInvocation("Builder.StartElement")
                     .WriteStringLiteral(tagName)
                     .WriteEndMethodInvocation();
             }
@@ -174,7 +174,7 @@ namespace Bridge.Razor.Generator
 
             private void WriteAttribute(string name, object value)
             {
-                Context.CodeWriter.WriteStartInstanceMethodInvocation("Builder", "AddAttribute");
+                Context.CodeWriter.WriteStartInstanceMethodInvocation("Builder", "SetAttributeValue");
                 Context.CodeWriter.WriteStringLiteral(name);
                 Context.CodeWriter.WriteParameterSeparator();
 
@@ -278,8 +278,7 @@ namespace Bridge.Razor.Generator
                             {
                                 WriteAttribute(attribute.Key, CreateHtmlContentIntermediateNode(attribute.Value));
                             }
-                            if(nextTag.IsSelfClosing)
-                                EndElement();
+                            
                             
 
                             if (_nextElementAttributes.Count > 0)
@@ -304,7 +303,8 @@ namespace Bridge.Razor.Generator
                                 wr.WriteCSharpExpressionMethod = oldMethod;
                                 _nextElementAttributeExpressions.Clear();
                             }
-
+                            if(nextTag.IsSelfClosing)
+                                EndElement();
                             break;
 
                         case HtmlTokenType.Character:
@@ -366,10 +366,7 @@ namespace Bridge.Razor.Generator
                     throw new ArgumentNullException(nameof(node));
                 }
 
-                context.CodeWriter.WriteStartMethodInvocation("Builder.AppendText")
-                    .Write(sourceSequence.ToString())
-                    .WriteParameterSeparator();
-
+                context.CodeWriter.WriteStartMethodInvocation("Builder.AppendText");
                 for (var i = 0; i < node.Children.Count; i++)
                 {
                     if (node.Children[i] is IntermediateToken token && token.IsCSharp)
