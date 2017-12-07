@@ -23,8 +23,28 @@ Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() => {
     MSBuild("./src/Bridge.Razor/Bridge.Razor.csproj", settings => settings.SetConfiguration(configuration));
+    MSBuild("./src/Bridge.Razor.React/Bridge.Razor.React.csproj", settings => settings.SetConfiguration(configuration));
     MSBuild("./src/Bridge.Razor.Generator/Bridge.Razor.Generator.csproj", settings => settings.SetConfiguration(configuration));
 });
+
+void Pack(string id, NuSpecContent[] content, string description)
+{
+     var settings = new NuGetPackSettings()
+     {
+         Id = id,
+         Files = content,
+         BasePath = Directory("."),
+         OutputDirectory = "build",
+         Version = version,
+         Title                   = id,
+         Authors                 = new[] {"Nikita Tsukanov"},
+         Owners                  = new[] {"kekekeks"},
+         Description             = description,
+         NoPackageAnalysis       = true,
+         ProjectUrl              = new Uri("https://github.com/kekekeks/Bridge.Razor") 
+    };
+    NuGetPack(settings);
+}
     
 Task("CreatePackage")
     .IsDependentOn("Clean")
@@ -54,20 +74,13 @@ Task("CreatePackage")
             Target = "lib/net40"
         }
     };
-    var settings = new NuGetPackSettings()
-     {
-         Id = "Bridge.Razor",
-         Files = content,
-         BasePath = Directory("."),
-         OutputDirectory = "build",
-         Version = version,
-         Title                   = "Bridge.Razor",
-         Authors                 = new[] {"Nikita Tsukanov"},
-         Owners                  = new[] {"kekekeks"},
-         Description             = "Razor support for Bridge",
-         NoPackageAnalysis       = true
-    };
-    NuGetPack(settings);
+    Pack("Bridge.Razor", content, "Razor support for Bridge");
+    Pack("Bridge.Razor.React", new []{
+        new NuSpecContent{
+            Source = "src/Bridge.Razor.React/bin/"  + configuration + "/Bridge.Razor.React.dll",
+            Target = "lib/net40"
+        }
+    }, "Razor support for Bridge.React");
 });
 
 Task("Default").IsDependentOn("CreatePackage");
