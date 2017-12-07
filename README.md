@@ -12,6 +12,11 @@
 }));
 ```
 
+or use partial view like here:
+
+![component](https://user-images.githubusercontent.com/1067584/33739761-5c3ad9f2-dbaf-11e7-8f45-29f58e704748.png)
+
+![react](https://user-images.githubusercontent.com/1067584/33739791-75e3b7fc-dbaf-11e7-8c84-c13ede957833.gif)
 
 ## How it works
 
