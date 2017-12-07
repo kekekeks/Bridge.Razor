@@ -7,8 +7,8 @@ namespace Bridge.Razor.React.RuntimeSupport
 {
     public class ReactDomBuilder : IDomBuilder
     {
-        [Template("React.createElement({name}, Bridge.React.fixAttr({properties}), {*children})")]
-        public static extern ReactElement CreateElement(string name, object properties, object[] children);
+        [Template("React.createElement.apply(null, {args})")]
+        public static extern ReactElement CreateElementDyn(object[] args);
         
         [Template("React.createElement({name}, Bridge.React.fixAttr({properties}))")]
         public static extern ReactElement CreateElement(string name, object properties);
@@ -44,7 +44,11 @@ namespace Bridge.Razor.React.RuntimeSupport
             {
                 if (Children.Count == 0)
                     return CreateElement(Name, Attributes);
-                return CreateElement(Name, Attributes, Children.Select(c => c.Build()).ToArray());
+                var args = Children.Select(c => c.Build()).ToList();
+                args.Insert(0, Attributes);
+                args.Insert(0, Name);
+                var arr = args.ToArray();
+                return CreateElementDyn(arr);
             }
         }
 

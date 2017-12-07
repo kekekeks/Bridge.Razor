@@ -43,12 +43,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\SimpleReactComponent.cshtml.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bridge.json" />
-    <Content Include="Views\SimpleReactComponent.cshtml" />
+    <Content Include="Components\SimpleReactComponent.cshtml" />
     <Content Include="Views\SimpleView.cshtml" />
     <Content Include="wwwroot\react-dom.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -58,10 +57,16 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\SimpleReactComponent.cshtml.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ViewModels\SimpleViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Bridge.Razor.Generator\Bridge.Razor.Generator.csproj">
+      <Project>{2b93afae-de94-470c-92e4-a08c299bddb7}</Project>
+      <Name>Bridge.Razor.Generator</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Bridge.Razor.React\Bridge.Razor.React.csproj">
       <Project>{401313c9-3e26-4553-bb88-2413b8ce0616}</Project>
       <Name>Bridge.Razor.React</Name>
@@ -72,7 +77,7 @@
     </ProjectReference>
   </ItemGroup>
   <Target Name="GenerateBridgeRazorFiles" BeforeTargets="BridgeNetCompilerTask;CoreCompile">
-    <Exec Command="$(MSBuildThisFileDirectory)\..\..\src\Bridge.Razor.Generator\bin\Debug\Bridge.Razor.Generator.exe &quot;$(ProjectDir)&quot; &quot;$(IntermediateOutputPath)\Bridge.Razor\&quot;"/>
+    <Exec Command="$(MSBuildThisFileDirectory)\..\..\src\Bridge.Razor.Generator\bin\Debug\Bridge.Razor.Generator.exe &quot;$(ProjectDir)&quot; &quot;$(IntermediateOutputPath)\Bridge.Razor\&quot;" />
     <ItemGroup>
       <Compile Include="$(IntermediateOutputPath)\Bridge.Razor\**\*.cs">
         <InProject>false</InProject>
