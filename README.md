@@ -1,5 +1,7 @@
 # Razor support for bridge.net
 
+## Usage
+
 1) Add nuget package (currently on myget https://www.myget.org/F/bridge-razor/api/v2 )
 2) Create .cshtml files
 3) use `RazorEngine.ExecuteViewToStringAsync("/Views/YourView.cshtml", model)`
