@@ -12,9 +12,8 @@ namespace Bridge.Razor
 {
     interface IBaseView
     {
-        IDomBuilder Builder { get; set; }
         object Model { get; set; }
-        void Execute();
+        void Execute(IDomBuilder builder);
     }
     
     public abstract class BaseView : BaseView<dynamic>
@@ -32,14 +31,13 @@ namespace Bridge.Razor
             set { Model = (T) value; }
         }
         
-        public IDomBuilder Builder { get; set; }
 
-        public void Execute()
+        public void Execute(IDomBuilder builder)
         {
-            RenderRazor();
+            RenderRazor(builder);
         }
         
-        protected virtual void RenderRazor()
+        protected virtual void RenderRazor(IDomBuilder builder)
         {
             throw new NotImplementedException();
         }

@@ -34,5 +34,7 @@ namespace Bridge.Razor
 
         public void AppendText(string text) 
             => _currentElement.AppendChild(Document.CreateTextNode(text));
+
+        public void AppendExpression(object expressionResult) => AppendText(expressionResult.ToString());
     }
 }

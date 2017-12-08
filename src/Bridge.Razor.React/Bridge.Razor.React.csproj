@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RazorReactComponent.cs" />
+    <Compile Include="RazorReactStatelessComponent.cs" />
     <Compile Include="RuntimeSupport\ReactDomBuilder.cs" />
   </ItemGroup>
   <ItemGroup>

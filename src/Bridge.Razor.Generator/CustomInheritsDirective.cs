@@ -37,17 +37,12 @@ namespace Bridge.Razor.Generator
                 
             if (PartialClassMode)
             {
-                var genericStart = fullClassName.IndexOf("<");
-                var nsi = genericStart == -1
-                    ? fullClassName.LastIndexOf('.')
-                    : fullClassName.LastIndexOf(fullClassName.Substring(0, genericStart), '.');
-                var ns = fullClassName.Substring(0, nsi);
-                var className = fullClassName.Substring(nsi + 1);
-
-                var pns = documentNode.FindPrimaryNamespace().Content = ns;
+                var info = new TypeReferenceInfo(fullClassName);
+                
+                var pns = documentNode.FindPrimaryNamespace().Content = info.Namespace;
                 primaryClass.BaseType = null;
                 primaryClass.Modifiers.Add("partial");
-                primaryClass.ClassName = className;
+                primaryClass.ClassName = info.Name;
             }
             else
             {

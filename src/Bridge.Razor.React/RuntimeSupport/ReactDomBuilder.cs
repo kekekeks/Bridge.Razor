@@ -33,6 +33,21 @@ namespace Bridge.Razor.React.RuntimeSupport
 
             public object Build() => _text;
         }
+
+        class ComponentElement : IChild
+        {
+            private readonly dynamic _component;
+
+            public ComponentElement(dynamic component)
+            {
+                _component = component;
+            }
+
+            public object Build()
+            {
+                return _component._reactElement;
+            }
+        }
         
         class DomElement : IChild
         {
@@ -83,6 +98,16 @@ namespace Bridge.Razor.React.RuntimeSupport
             if (_stack.Count != 0)
                 throw new InvalidOperationException($"{_currentElement.Name} is not closed");
             return (ReactElement) _currentElement.Build();
+        }
+
+        public void AppendExpression(dynamic expr)
+        {
+            if (expr == null)
+                return;
+            if (expr._reactElement != null)
+                _currentElement.Children.Add(new ComponentElement(expr));
+            else
+                AppendText(((object) expr).ToString());
         }
     }
 }

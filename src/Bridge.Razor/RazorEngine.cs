@@ -14,8 +14,7 @@ namespace Bridge.Razor
             var v = (IBaseView) CreateView(path);
             v.Model = model;
             var root = Document.CreateElement("div");
-            v.Builder = new DefaultDomBuilder(root);
-            v.Execute();
+            v.Execute(new DefaultDomBuilder(root));
             return root;
         }
     }

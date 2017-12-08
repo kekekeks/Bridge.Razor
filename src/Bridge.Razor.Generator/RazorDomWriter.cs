@@ -164,7 +164,7 @@ namespace Bridge.Razor.Generator
                 else
                 {
                     // We're between tags, so treat it as an @someVar expression to be rendered as a text node
-                    WriteCSharpExpressionAsTextNode(++_sourceSequence, Context, node);
+                    WriteContentExpression(++_sourceSequence, Context, node);
                 }
             }
 
@@ -356,7 +356,7 @@ namespace Bridge.Razor.Generator
                 }
             }
 
-            public static void WriteCSharpExpressionAsTextNode(int sourceSequence, CodeRenderingContext context, CSharpExpressionIntermediateNode node)
+            public static void WriteContentExpression(int sourceSequence, CodeRenderingContext context, CSharpExpressionIntermediateNode node)
             {
                 if (context == null)
                 {
@@ -368,7 +368,7 @@ namespace Bridge.Razor.Generator
                     throw new ArgumentNullException(nameof(node));
                 }
 
-                context.CodeWriter.WriteStartMethodInvocation("Builder.AppendText");
+                context.CodeWriter.WriteStartMethodInvocation("Builder.AppendExpression");
                 for (var i = 0; i < node.Children.Count; i++)
                 {
                     if (node.Children[i] is IntermediateToken token && token.IsCSharp)

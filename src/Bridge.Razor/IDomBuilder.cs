@@ -6,5 +6,6 @@
         void EndElement();
         void SetAttributeValue(string name, object value);
         void AppendText(string text);
+        void AppendExpression(object expressionResult);
     }
 }

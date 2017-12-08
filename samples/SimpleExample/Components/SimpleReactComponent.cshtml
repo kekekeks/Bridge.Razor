@@ -1,6 +1,7 @@
 @* type=partial *@
 @using System
 @using Bridge.Html5
+@using SimpleExample.Components
 @inherits SimpleExample.Components.SimpleReactComponent
 
 <label>@props.Label</label>
@@ -11,3 +12,11 @@
     }))" type="text" />
 <button disabled="@(state == null || string.IsNullOrWhiteSpace(state.Value))" onClick="@(
     Event(_=>props.OnSave(state.Value)))">Save</button>
+    
+<div>
+    <label>Child component</label>
+    @(new ChildComponent(new ChildComponent.Props()
+       {
+           Text = state?.Value ?? ""
+       }))
+</div>

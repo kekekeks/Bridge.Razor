@@ -1,0 +1,16 @@
+@* type=react-component *@
+@* classname=SimpleExample.Components.ChildComponent *@
+@using System
+@using Bridge.Razor
+@inherits Bridge.Razor.React.RazorReactStatelessComponent<SimpleExample.Components.ChildComponent.Props>
+
+@functions
+{
+    public class Props : Object
+    {
+        public string Text { get; set; }
+    }
+}
+<div>
+    @props.Text
+</div>

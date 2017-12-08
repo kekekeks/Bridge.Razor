@@ -1,14 +1,17 @@
-﻿using System;
-using Bridge.Html5;
-using Bridge.Razor.React.RuntimeSupport;
+﻿using Bridge.Razor.React.RuntimeSupport;
 using Bridge.React;
 
 namespace Bridge.Razor.React
 {
-    public abstract class RazorComponent<TProps, TState> : Component<TProps, TState> 
+    public class RazorReactStatelessComponent<TProps> : StatelessComponent<TProps>
     {
-        public RazorComponent(TProps props, params Union<ReactElement, string>[] children) : base(props, children)
+        public RazorReactStatelessComponent(TProps props, params Union<ReactElement, string>[] children) : base(props, children)
         {
+        }
+
+        protected RazorReactStatelessComponent() : this(default(TProps), null)
+        {
+            
         }
 
         protected virtual void RenderRazor(IDomBuilder builder)
@@ -22,7 +25,5 @@ namespace Bridge.Razor.React
             RenderRazor(builder);
             return builder.Create();
         }
-
-        public object Event(Action<SyntheticEvent<HTMLElement>> cb) => cb;
     }
 }

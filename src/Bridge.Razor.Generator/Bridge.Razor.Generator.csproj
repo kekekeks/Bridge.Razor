@@ -36,10 +36,12 @@
     <Compile Include="CustomInheritsDirective.cs" />
     <Compile Include="CustomWriterPhase.cs" />
     <Compile Include="DefaultCodeRenderingContext.cs" />
+    <Compile Include="GenerateReactComponentCtorFeature.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="RazorDomWriter.cs" />
     <Compile Include="..\external\AngleSharp\src\AngleSharp\**\*.cs" />
     <Compile Remove="..\external\AngleSharp\src\AngleSharp\Properties\**\*.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNetCore.Razor, Version=2.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">

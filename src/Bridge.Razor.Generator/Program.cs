@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Razor.Language;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
 namespace Bridge.Razor.Generator
 {
@@ -28,6 +29,7 @@ namespace Bridge.Razor.Generator
 
             CustomWriterPhase customWriter = null;
             var inheritsDirective = new CustomInheritsDirective();
+            var reactCtorPhase = new GenerateReactComponentCtorFeature();
             var engine = RazorEngine.Create(builder =>
             {
                 builder
@@ -45,6 +47,8 @@ namespace Bridge.Razor.Generator
                 
                 inheritsDirective.Register(builder);
                 Microsoft.AspNetCore.Razor.Language.Extensions.FunctionsDirective.Register(builder);
+                builder.Features.Add(reactCtorPhase);
+
                 
             });
             
@@ -62,10 +66,14 @@ namespace Bridge.Razor.Generator
                 var className = Regex.Replace(path.Replace("/", "_"),
                                     "[^A-Za-z-0-9]+", "") + "_" +
                                 Guid.NewGuid().ToString().Replace("-", "");
+                var outputName = Utils.EscapePath(path);
+                var ns = DefaultNamespace;
 
+                var suppressRegistration = false;
                 inheritsDirective.PartialClassMode = false;
+                reactCtorPhase.Enabled = false;
                 Func<string, string> postProcess = _ => _;
-                customWriter.Writer = new RazorDomWriter();
+                
                 var lines = File.ReadAllLines(item.PhysicalPath);
                 foreach (var l in lines)
                 {
@@ -78,9 +86,22 @@ namespace Bridge.Razor.Generator
                     if (key == "type" && value == "partial")
                     {
                         inheritsDirective.PartialClassMode = true;
+                        suppressRegistration = true;
+                    }
+
+                    if (key == "classname")
+                    {
+                        var parsed = new TypeReferenceInfo(value);
+                        ns = parsed.Namespace;
+                        className = parsed.Name;
+                        suppressRegistration = true;
+                    }
+                    if (key == "type" && value == "react-component")
+                    {
+                        reactCtorPhase.Enabled = true;
                     }
                 }
-                
+                customWriter.Writer = new RazorDomWriter();
                 var cSharpDocument = tengine.GenerateCode(item);
                 if (cSharpDocument.Diagnostics.Any())
                 {
@@ -95,13 +116,13 @@ namespace Bridge.Razor.Generator
                     
                     var code = cSharpDocument.GeneratedCode.Replace(ClassName, className);
                     code = postProcess(code.Replace(
-                            "public async override global::System.Threading.Tasks.Task ExecuteAsync",
-                            "protected override void RenderRazor")
-                        .Replace(TempNamespace, DefaultNamespace)
+                            "public async override global::System.Threading.Tasks.Task ExecuteAsync(",
+                            "protected override void RenderRazor(Bridge.Razor.IDomBuilder Builder")
+                        .Replace(TempNamespace, ns)
                     );
                     
-                    File.WriteAllText(Path.Combine(outputDirectory, className + ".generated.cs"), code);
-                    if (!inheritsDirective.PartialClassMode)
+                    File.WriteAllText(Path.Combine(outputDirectory, outputName + ".generated.cs"), code);
+                    if (!suppressRegistration)
                         initCode += "\nBridge.Razor.RuntimeSupport.ViewRegistry.Register(\""
                                     + path.Replace("\\", "/")
                                     + "\", () => new " + className + " ());";
