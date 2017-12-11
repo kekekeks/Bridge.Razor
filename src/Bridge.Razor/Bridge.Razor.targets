@@ -9,7 +9,8 @@
             BeforeTargets="BridgeNetCompilerTask;CoreCompile;Compile;CompileDesignTime"
             DependsOnTargets="PrepareBridgeRazor">
 
-        <Exec Command='$(BridgeRazorUtilityPath) "$(ProjectDir)" "$(IntermediateOutputPath)\Bridge.Razor\"'/>
+        <Exec Condition="$(OnWin) == true" Command='$(BridgeRazorUtilityPath) $(ProjectDir) $(BridgeRazorOutputPath)'/>
+        <Exec Condition="$(OnWin) != true" Command="$(BridgeRazorUtilityPath) &quot;$(ProjectDir)&quot; &quot;$(BridgeRazorOutputPath)&quot;"/>
         <Message Text="Removing @(PreExistingGeneratedBridgeRazorFiles)" Importance="high"/>
         <ItemGroup>
             <Compile Include="$(IntermediateOutputPath)\Bridge.Razor\**\*.cs">
@@ -21,6 +22,7 @@
         <PropertyGroup>
             <BridgeRazorUtilityPath Condition="'$(BridgeRazorUtilityPath)' == ''"
                 >$(MSBuildThisFileDirectory)\..\tools\gen\Bridge.Razor.Generator.exe</BridgeRazorUtilityPath>
+            <BridgeRazorOutputPath>$(IntermediateOutputPath)\Bridge.Razor</BridgeRazorOutputPath>
         </PropertyGroup>
         <ItemGroup>
             <Compile Remove="$(IntermediateOutputPath)\Bridge.Razor\**\*.cs"/>
