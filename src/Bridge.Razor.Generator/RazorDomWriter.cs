@@ -1,4 +1,6 @@
-﻿using System;
+// Large chunks of this file were originally taken from https://github.com/SteveSanderson/Blazor/blob/master/src/Blazor.Compiler/VirtualDomDocumentWriter.cs
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
