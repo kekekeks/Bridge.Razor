@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Target Name="GenerateBridgeRazorFiles" BeforeTargets="BridgeNetCompilerTask;CoreCompile">
-        <Exec Command="$(MSBuildThisFileDirectory)\..\tools\gen\Bridge.Razor.Generator.exe &quot;$(ProjectDir)&quot; &quot;$(IntermediateOutputPath)\Bridge.Razor\&quot;"/>
+    <ItemGroup>
+        <Compile Include="$(IntermediateOutputPath)\Bridge.Razor\**\*.cs">
+            <InProject>false</InProject>
+        </Compile>
+    </ItemGroup>
+    <Target Name="GenerateBridgeRazorFiles" 
+            BeforeTargets="BridgeNetCompilerTask;CoreCompile;Compile;CompileDesignTime"
+            DependsOnTargets="PrepareBridgeRazor">
+
+        <Exec Command="$(BridgeRazorUtilityPath) &quot;$(ProjectDir)&quot; &quot;$(IntermediateOutputPath)\Bridge.Razor\&quot;"/>
+        <Message Text="Removing @(PreExistingGeneratedBridgeRazorFiles)" Importance="high"/>
         <ItemGroup>
             <Compile Include="$(IntermediateOutputPath)\Bridge.Razor\**\*.cs">
                 <InProject>false</InProject>
             </Compile>
+        </ItemGroup>
+    </Target>
+    <Target Name="PrepareBridgeRazor">
+        <PropertyGroup>
+            <BridgeRazorUtilityPath Condition="'$(BridgeRazorUtilityPath)' == ''"
+                >$(MSBuildThisFileDirectory)\..\tools\gen\Bridge.Razor.Generator.exe</BridgeRazorUtilityPath>
+        </PropertyGroup>
+        <ItemGroup>
+            <Compile Remove="$(IntermediateOutputPath)\Bridge.Razor\**\*.cs"/>
         </ItemGroup>
     </Target>
 </Project>
